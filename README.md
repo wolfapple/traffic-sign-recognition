@@ -101,7 +101,7 @@ The GTSRB dataset (German Traffic Sign Recognition Benchmark) is provided by the
 
 <p align="center"><img src="./images/traffic-signs.png" /></p>
 
-1. [Download the dataset](https://d17h27t6h515a5.cloudfront.net/topher/2016/November/581faac4_traffic-signs-data/traffic-signs-data.zip). This is a pickled dataset in which resized the images to 32x32.
+1. [Download the dataset](https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/traffic-signs-data.zip). This is a pickled dataset in which resized the images to 32x32.
 
 2. Unzip the dataset into `./data` directory.
 
