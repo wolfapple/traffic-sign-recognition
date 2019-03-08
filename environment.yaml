@@ -8,5 +8,6 @@ dependencies:
   - matplotlib
   - jupyter
   - pip:
+      - opencv-python
       - torch
       - torchvision
