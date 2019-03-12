@@ -108,3 +108,7 @@ data/
 
 # vscode
 .vscode/
+
+# output
+/*.pt
+/*.png
