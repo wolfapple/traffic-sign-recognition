@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this project, you will use what you've learned about deep neural networks and convolutional neural networks to classify traffic signs. You will train a model so it can decode traffic signs from natural images by using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, you will then test your model program on new images of traffic signs you find on the web, or, if you're feeling adventurous pictures of traffic signs you find locally!
+In this project, I will show you how to use PyTorch to classify traffic signs and how to imporve the classifier with a Spatial Transformer Networks. You will train a model so it can decode traffic signs from natural images by using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, you will then test your model on new iamges of traffic signs from test dataset.
 
 ## Configure and Manage Your Environment with Anaconda
 
@@ -113,6 +113,14 @@ Run the script train.py to train the model.
   python train.py
   ```
 
+You can include one or more command line arguments.
+
+  ```sh
+  python train.py --help
+  ```
+
+Various training options can be confirmed with the following command.
+
 ## Evaluating the model on the test set
 
 As the model trains, model checkpoints are saved to files such as model_x.pth to the current working directory. You can take one of the checkpoints and run:
@@ -120,3 +128,5 @@ As the model trains, model checkpoints are saved to files such as model_x.pth to
   ```sh
   python evaluate.py --data [data_dir] --model [model_file]
   ```
+
+We want to visualize the output of the spatial transformers layer after the training, we visualize a batch of input images and the corresponding transformed batch using STN. Check the generated image file.
