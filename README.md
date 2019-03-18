@@ -123,7 +123,7 @@ Various training options can be confirmed with the following command.
 
 ## Evaluating the model on the test set
 
-As the model trains, model checkpoints are saved to files such as model_x.pth to the current working directory. You can take one of the checkpoints and run:
+As the model trains, model checkpoints are saved to model.pt file to the current working directory. You can take one of the checkpoints and run:
 
   ```sh
   python evaluate.py --data [data_dir] --model [model_file]

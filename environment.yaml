@@ -11,3 +11,4 @@ dependencies:
       - opencv-python
       - torch
       - torchvision
+      - tqdm
