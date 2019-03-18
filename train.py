@@ -1,7 +1,7 @@
 import numpy as np
 import argparse
 import torch
-from data import get_train_loaders
+from data import get_train_loaders, preprocess
 from model import TrafficSignNet
 from torch import nn, optim
 import torch.nn.functional as F
@@ -91,6 +91,7 @@ if __name__ == "__main__":
 
     # Data Initialization and Loading
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    preprocess(args.data)
     train_loader, valid_loader = get_train_loaders(
         args.data, device, args.batch_size, args.num_workers, args.class_count)
 

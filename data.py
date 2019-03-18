@@ -1,9 +1,11 @@
+import os
 import pickle
 import numpy as np
 import torch
 from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader, sampler
-from transform import get_train_transforms, get_test_transforms
+from transform import get_train_transforms, get_test_transforms, CLAHE_GRAY
+from tqdm import tqdm
 
 # To load the picked dataset
 
@@ -93,14 +95,32 @@ def extend_dataset(dataset):
     return dataset
 
 
+def preprocess(path):
+    if not os.path.exists(f"{path}/train_gray.p"):
+        for dataset in ['train', 'valid', 'test']:
+            with open(f"{path}/{dataset}.p", mode='rb') as f:
+                data = pickle.load(f)
+                X = data['features']
+                y = data['labels']
+
+            clahe = CLAHE_GRAY()
+            for i in tqdm(range(len(X)), desc=f"Processing {dataset} dataset"):
+                X[i] = clahe(X[i])
+
+            X = X[:, :, :, 0]
+            with open(f"{path}/{dataset}_gray.p", "wb") as f:
+                pickle.dump({"features": X.reshape(
+                    X.shape + (1,)), "labels": y}, f)
+
+
 def get_train_loaders(path, device, batch_size, workers, class_count):
-    def preprocess(x, y):
+    def to_device(x, y):
         return x.to(device), y.to(device, dtype=torch.int64)
 
     train_dataset = extend_dataset(PickledDataset(
-        path+'/train.p', transform=get_train_transforms()))
+        path+'/train_gray.p', transform=get_train_transforms()))
     valid_dataset = PickledDataset(
-        path+'/valid.p', transform=get_test_transforms())
+        path+'/valid_gray.p', transform=get_test_transforms())
 
     # Use weighted sampler
     class_sample_count = np.bincount(train_dataset.labels)
@@ -108,9 +128,9 @@ def get_train_loaders(path, device, batch_size, workers, class_count):
                             for y in train_dataset.labels])
     samp = sampler.WeightedRandomSampler(weights, 43 * class_count)
     train_loader = WrappedDataLoader(DataLoader(
-        train_dataset, batch_size=batch_size, sampler=samp, num_workers=workers), preprocess)
+        train_dataset, batch_size=batch_size, sampler=samp, num_workers=workers), to_device)
     valid_loader = WrappedDataLoader(DataLoader(
-        valid_dataset, batch_size=batch_size, shuffle=False, num_workers=workers), preprocess)
+        valid_dataset, batch_size=batch_size, shuffle=False, num_workers=workers), to_device)
 
     return train_loader, valid_loader
 
@@ -120,7 +140,7 @@ def get_test_loader(path, device, gray=True):
         return x.to(device), y.to(device, dtype=torch.int64)
 
     test_dataset = PickledDataset(
-        path+'/test.p', transform=get_test_transforms())
+        path+'/test_gray.p', transform=get_test_transforms())
     test_loader = WrappedDataLoader(DataLoader(
         test_dataset, batch_size=64, shuffle=False), preprocess)
 

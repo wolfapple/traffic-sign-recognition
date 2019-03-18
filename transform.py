@@ -19,7 +19,6 @@ class CLAHE_GRAY:
 
 def get_train_transforms():
     return transforms.Compose([
-        CLAHE_GRAY(),
         transforms.ToPILImage(),
         transforms.RandomApply([
             transforms.RandomRotation(20, resample=PIL.Image.BICUBIC),
@@ -35,6 +34,5 @@ def get_train_transforms():
 
 def get_test_transforms():
     return transforms.Compose([
-        CLAHE_GRAY(),
         transforms.ToTensor()
     ])
