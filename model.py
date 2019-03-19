@@ -18,9 +18,8 @@ class TrafficSignNet(nn.Module):
         self.conv3_bn = nn.BatchNorm2d(250)
         self.fc1 = nn.Linear(250 * 3 * 3, 350)
         self.fc1_bn = nn.BatchNorm1d(350)
-        self.fc2 = nn.Linear(350, 100)
+        self.fc2 = nn.Linear(350, 43)
         self.dropout = nn.Dropout(p=0.5)
-        self.fc3 = nn.Linear(100, 43)
 
     def forward(self, x):
         x = self.stn(x)
@@ -31,9 +30,9 @@ class TrafficSignNet(nn.Module):
         x = self.pool(F.elu(self.conv3(x)))
         x = self.dropout(self.conv3_bn(x))
         x = x.view(-1, 250 * 3 * 3)
-        x = self.fc1_bn(F.elu(self.fc1(x)))
-        x = self.dropout(self.fc2(x))
-        x = self.fc3(x)
+        x = F.elu(self.fc1(x))
+        x = self.dropout(self.fc1_bn(x))
+        x = self.fc2(x)
         return x
 
 
@@ -44,16 +43,16 @@ class Stn(nn.Module):
         self.loc_net = nn.Sequential(
             nn.Conv2d(1, 50, 7),
             nn.MaxPool2d(2, 2),
-            nn.LeakyReLU(),
+            nn.ELU(),
             nn.Conv2d(50, 100, 5),
             nn.MaxPool2d(2, 2),
-            nn.LeakyReLU()
+            nn.ELU()
         )
         # Regressor for the 3 * 2 affine matrix
         self.fc_loc = nn.Sequential(
-            nn.Linear(100 * 4 * 4, 32),
-            nn.LeakyReLU(),
-            nn.Linear(32, 3 * 2)
+            nn.Linear(100 * 4 * 4, 100),
+            nn.ELU(),
+            nn.Linear(100, 3 * 2)
         )
         # Initialize the weights/bias with identity transformation
         self.fc_loc[2].weight.data.zero_()

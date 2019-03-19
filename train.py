@@ -69,7 +69,7 @@ if __name__ == "__main__":
         description='Traffic sign recognition training script')
     parser.add_argument('--data', type=str, default='data', metavar='D',
                         help="Folder where data is located. train.p and vliad.p need to be found in the folder (default: data)")
-    parser.add_argument('--class-count', type=int, default=10000, metavar='C',
+    parser.add_argument('--class-count', type=int, default=20000, metavar='C',
                         help='Each class will have this number of samples after extension and balancing (default: 10k)')
     parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                         help='Input batch size for training (default: 64)')
