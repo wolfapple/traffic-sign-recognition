@@ -4,6 +4,10 @@
 
 In this project, I will show you how to use PyTorch to classify traffic signs and how to imporve the classifier with a Spatial Transformer Networks. You will train a model so it can decode traffic signs from natural images by using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, you will then test your model on new iamges of traffic signs from test dataset.
 
+The model is designed using Spatial Transformer Network with a modified version of IDSIA networks and trained with heavily augmented data. The models reaches about 99.3% test set accuracy
+
+My attempt to tackle this problem can be read in [report](https://medium.com/@wolfapple/traffic-sign-recognition-2b0c3835e104).
+
 ## Configure and Manage Your Environment with Anaconda
 
 Per the Anaconda [docs](http://conda.pydata.org/docs):
